@@ -38,6 +38,8 @@ namespace MissionPlanner
             this.CTX_mainmenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.autoHideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readonlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuPreFlight = new System.Windows.Forms.ToolStripButton();
             this.MenuFlightData = new System.Windows.Forms.ToolStripButton();
             this.MenuFlightPlanner = new System.Windows.Forms.ToolStripButton();
             this.MenuInitConfig = new System.Windows.Forms.ToolStripButton();
@@ -47,10 +49,9 @@ namespace MissionPlanner
             this.MenuHelp = new System.Windows.Forms.ToolStripButton();
             this.MenuConnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripConnectionControl = new MissionPlanner.Controls.ToolStripConnectionControl();
-            this.MenuDonate = new System.Windows.Forms.ToolStripMenuItem();
             this.menu = new MissionPlanner.Controls.MyButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.readonlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuMultiUav = new System.Windows.Forms.ToolStripButton();
             this.MainMenu.SuspendLayout();
             this.CTX_mainmenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -63,6 +64,7 @@ namespace MissionPlanner
             this.MainMenu.GripMargin = new System.Windows.Forms.Padding(0);
             this.MainMenu.ImageScalingSize = new System.Drawing.Size(0, 0);
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuPreFlight,
             this.MenuFlightData,
             this.MenuFlightPlanner,
             this.MenuInitConfig,
@@ -72,7 +74,7 @@ namespace MissionPlanner
             this.MenuHelp,
             this.MenuConnect,
             this.toolStripConnectionControl,
-            this.MenuDonate});
+            this.MenuMultiUav});
             resources.ApplyResources(this.MainMenu, "MainMenu");
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Stretch = false;
@@ -101,6 +103,21 @@ namespace MissionPlanner
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             resources.ApplyResources(this.fullScreenToolStripMenuItem, "fullScreenToolStripMenuItem");
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.fullScreenToolStripMenuItem_Click);
+            // 
+            // readonlyToolStripMenuItem
+            // 
+            this.readonlyToolStripMenuItem.CheckOnClick = true;
+            this.readonlyToolStripMenuItem.Name = "readonlyToolStripMenuItem";
+            resources.ApplyResources(this.readonlyToolStripMenuItem, "readonlyToolStripMenuItem");
+            this.readonlyToolStripMenuItem.Click += new System.EventHandler(this.readonlyToolStripMenuItem_Click);
+            // 
+            // MenuPreFlight
+            // 
+            resources.ApplyResources(this.MenuPreFlight, "MenuPreFlight");
+            this.MenuPreFlight.ForeColor = System.Drawing.Color.White;
+            this.MenuPreFlight.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuPreFlight.Name = "MenuPreFlight";
+            this.MenuPreFlight.Click += new System.EventHandler(this.MenuPreFlight_Click);
             // 
             // MenuFlightData
             // 
@@ -182,15 +199,6 @@ namespace MissionPlanner
             resources.ApplyResources(this.toolStripConnectionControl, "toolStripConnectionControl");
             this.toolStripConnectionControl.MouseLeave += new System.EventHandler(this.MainMenu_MouseLeave);
             // 
-            // MenuDonate
-            // 
-            resources.ApplyResources(this.MenuDonate, "MenuDonate");
-            this.MenuDonate.ForeColor = System.Drawing.Color.White;
-            this.MenuDonate.Image = global::MissionPlanner.Properties.Resources.donate;
-            this.MenuDonate.Name = "MenuDonate";
-            this.MenuDonate.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.MenuDonate.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
             // menu
             // 
             resources.ApplyResources(this.menu, "menu");
@@ -206,12 +214,13 @@ namespace MissionPlanner
             this.panel1.Name = "panel1";
             this.panel1.MouseLeave += new System.EventHandler(this.MainMenu_MouseLeave);
             // 
-            // readonlyToolStripMenuItem
+            // MenuMultiUav
             // 
-            this.readonlyToolStripMenuItem.CheckOnClick = true;
-            this.readonlyToolStripMenuItem.Name = "readonlyToolStripMenuItem";
-            resources.ApplyResources(this.readonlyToolStripMenuItem, "readonlyToolStripMenuItem");
-            this.readonlyToolStripMenuItem.Click += new System.EventHandler(this.readonlyToolStripMenuItem_Click);
+            resources.ApplyResources(this.MenuMultiUav, "MenuMultiUav");
+            this.MenuMultiUav.ForeColor = System.Drawing.Color.White;
+            this.MenuMultiUav.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuMultiUav.Name = "MenuMultiUav";
+            this.MenuMultiUav.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
             // 
             // MainV2
             // 
@@ -249,9 +258,10 @@ namespace MissionPlanner
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ContextMenuStrip CTX_mainmenu;
         private System.Windows.Forms.ToolStripMenuItem autoHideToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem MenuDonate;
         public System.Windows.Forms.MenuStrip MainMenu;
         private System.Windows.Forms.ToolStripMenuItem fullScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem readonlyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton MenuPreFlight;
+        private System.Windows.Forms.ToolStripButton MenuMultiUav;
     }
 }

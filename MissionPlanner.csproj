@@ -83,7 +83,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -326,6 +326,12 @@
     </Compile>
     <Compile Include="Controls\Waypoints\Spline2.cs" />
     <Compile Include="Controls\Waypoints\Spline.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigAccelerometerCalibrationTracker.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -361,6 +367,18 @@
     </Compile>
     <Compile Include="GCSViews\ConfigurationView\ConfigWizard.Designer.cs">
       <DependentUpon>ConfigWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCSViews\MultiUav.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GCSViews\MultiUav.Designer.cs">
+      <DependentUpon>MultiUav.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCSViews\PreFlight.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GCSViews\PreFlight.Designer.cs">
+      <DependentUpon>PreFlight.cs</DependentUpon>
     </Compile>
     <Compile Include="Joystick\Joy_Do_Repeat_Servo.cs">
       <SubType>Form</SubType>
@@ -577,6 +595,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FollowMe.zh-TW.resx">
       <DependentUpon>FollowMe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigAccelerometerCalibrationTracker.de-DE.resx">
       <DependentUpon>ConfigAccelerometerCalibrationTracker.cs</DependentUpon>
@@ -802,6 +823,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\InitialSetup.zh-TW.resx">
       <DependentUpon>InitialSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\MultiUav.resx">
+      <DependentUpon>MultiUav.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\PreFlight.resx">
+      <DependentUpon>PreFlight.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\Simple.zh-Hant.resx">
       <DependentUpon>Simple.cs</DependentUpon>
@@ -1049,6 +1076,7 @@
     <None Include="airports.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Drivers\amd64\ftd2xx.lib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -6245,6 +6273,9 @@
     <None Include="Resources\marker_06.png" />
     <None Include="Resources\marker_07.png" />
     <None Include="Resources\heli.png" />
+    <None Include="Resources\mav001.JPG" />
+    <None Include="Resources\mav002.JPG" />
+    <None Include="Resources\mav003.JPG" />
     <Content Include="Resources\MAVCmd.zh-TW.txt" />
     <Content Include="Resources\MAVParam.zh-TW.txt" />
     <Content Include="Resources\new frames-01.png" />
@@ -6461,11 +6492,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(TargetDir)version.exe" "$(TargetPath)" &gt; "$(TargetDir)version.txt"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>cd $(ProjectDir)
-"C:\Program Files (x86)\Git\bin\git.exe" rev-parse HEAD &gt; "$(ProjectDir)\githash.txt"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

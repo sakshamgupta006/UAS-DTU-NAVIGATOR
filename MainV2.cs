@@ -57,7 +57,7 @@ namespace MissionPlanner
         static menuicons diplayicons = new menuicons2();
 
         public class menuicons
-        {
+        {//yet to see
             public Image fd = global::MissionPlanner.Properties.Resources.light_flightdata_icon;
             public Image fp = global::MissionPlanner.Properties.Resources.light_flightplan_icon;
             public Image initsetup = global::MissionPlanner.Properties.Resources.light_initialsetup_icon;
@@ -72,7 +72,7 @@ namespace MissionPlanner
         }
 
         public class menuicons2 : menuicons
-        {
+        {//yet to see
             public new Image fd = global::MissionPlanner.Properties.Resources.dark_flightdata_icon;
             public new Image fp = global::MissionPlanner.Properties.Resources.dark_flightplan_icon;
             public new Image initsetup = global::MissionPlanner.Properties.Resources.dark_initialsetup_icon;
@@ -252,6 +252,9 @@ namespace MissionPlanner
         /// declared here if i want a "single" instance of the form
         /// ie configuration gets reloaded on every click
         /// </summary>
+        ///
+        public GCSViews.MultiUav MultiUav;//sa
+        public GCSViews.PreFlight PreFlight;//SA
         public GCSViews.FlightData FlightData;
         public GCSViews.FlightPlanner FlightPlanner;
         GCSViews.Simulation Simulation;
@@ -463,6 +466,10 @@ namespace MissionPlanner
 
             try
             {
+                log.Info("Create MU");
+                MultiUav = new GCSViews.MultiUav();//SA
+                log.Info("Create PF");
+                PreFlight = new GCSViews.PreFlight();//SA
                 log.Info("Create FD");
                 FlightData = new GCSViews.FlightData();
                 log.Info("Create FP");
@@ -476,7 +483,8 @@ namespace MissionPlanner
                 // preload
                 log.Info("Create Python");
                 Python.CreateEngine();
-
+              //  MultiUav.Width = MyView.Width;//SA
+                PreFlight.Width = MyView.Width;//SA
                 FlightData.Width = MyView.Width;
                 FlightPlanner.Width = MyView.Width;
                 Simulation.Width = MyView.Width;
@@ -595,12 +603,14 @@ namespace MissionPlanner
 
             if (Program.Logo != null && Program.vvvvz)
             {
-                MenuDonate.Click -= this.toolStripMenuItem1_Click;
+                /*MenuDonate.Click -= this.toolStripMenuItem1_Click;
                 MenuDonate.Text = "";
                 MenuDonate.Image = Program.Logo;
 
                 MenuDonate.Click += MenuCustom_Click;
-
+                */ //SA
+                MenuMultiUav.Visible = false; //SA
+                MenuPreFlight.Visible = false; //SA
                 MenuFlightData.Visible = false;
                 MenuFlightPlanner.Visible = true;
                 MenuConfigTune.Visible = false;
@@ -645,6 +655,8 @@ namespace MissionPlanner
         {
             if (getConfig("password_protect") == "" || bool.Parse(getConfig("password_protect")) == false)
             {
+                MenuMultiUav.Visible = true;//SA
+                MenuPreFlight.Visible = true;//SA
                 MenuFlightData.Visible = true;
                 MenuFlightPlanner.Visible = true;
                 MenuConfigTune.Visible = true;
@@ -657,6 +669,8 @@ namespace MissionPlanner
             {
                 if (Password.VerifyPassword())
                 {
+                    MenuMultiUav.Visible = true;
+                    MenuPreFlight.Visible = true;
                     MenuFlightData.Visible = true;
                     MenuFlightPlanner.Visible = true;
                     MenuConfigTune.Visible = true;
@@ -730,6 +744,16 @@ namespace MissionPlanner
             if (_connectionControl.CMB_serialport.Items.Contains(oldport))
                 _connectionControl.CMB_serialport.Text = oldport;
         }
+
+        private void MenuMultiUav_Click(object sender, EventArgs e)
+        {
+            MyView.ShowScreen("MultiUav");
+        }    
+
+        private void MenuPreFlight_Click(object sender, EventArgs e)
+        {
+            MyView.ShowScreen("PreFlight");
+        }    
 
 
         private void MenuFlightData_Click(object sender, EventArgs e)
@@ -988,7 +1012,7 @@ namespace MissionPlanner
                     if (comPort.sysidseen.Count > 1)
                     {
                         // we have more than one mav
-                        int todo;
+                      //  int todo;//SA
                         // user selection of sysid
                         MissionPlanner.Controls.SysidSelector id = new SysidSelector();
 
@@ -1222,6 +1246,18 @@ namespace MissionPlanner
 
             // close all tabs
             MyView.Dispose();
+            log.Info("closing mu");//SA
+            try
+            {
+                MultiUav.Dispose();
+            }
+            catch { }
+            log.Info("closing pf");//SA
+            try
+            {
+                PreFlight.Dispose();
+            }
+            catch { }
 
             log.Info("closing fd");
             try
@@ -1745,7 +1781,7 @@ namespace MissionPlanner
                         float.TryParse(MainV2.getConfig("speechaltheight"), out warnalt);
                         try
                         {
-                            int todo; // need a reset method
+                          //  int todo; // need a reset method //SA
                             altwarningmax = (int)Math.Max(MainV2.comPort.MAV.cs.alt, altwarningmax);
 
                             if (MainV2.getConfig("speechaltenabled") == "True" && MainV2.comPort.MAV.cs.alt != 0.00 && (MainV2.comPort.MAV.cs.alt <= warnalt) && MainV2.comPort.MAV.cs.armed)
@@ -1956,7 +1992,8 @@ namespace MissionPlanner
                 AutoHideMenu(bool.Parse(config["menu_autohide"].ToString()));
             }
             catch { }
-
+          //  MyView.AddScreen(new MainSwitcher.Screen("FlightData", new GCSViews.MultiUav, true));
+          //  MyView.AddScreen(new MainSwitcher.Screen("PreFlight", PreFlight, true)); //SA yet to see
             MyView.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
             MyView.AddScreen(new MainSwitcher.Screen("FlightPlanner", FlightPlanner, true));
             MyView.AddScreen(new MainSwitcher.Screen("HWConfig", new GCSViews.InitialSetup(), false));
@@ -2166,7 +2203,7 @@ namespace MissionPlanner
 
         private void MenuHelp_Click(object sender, EventArgs e)
         {
-            MyView.ShowScreen("Help");
+            MyView.ShowScreen("MultiUav");
         }
 
 
@@ -2179,6 +2216,16 @@ namespace MissionPlanner
         /// <returns></returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            if (keyData == (Keys.Control | Keys.M))//sa
+            {
+                MenuMultiUav_Click(null, null);
+                return true;
+            }
+            if (keyData == Keys.F6)//sa
+            {
+                MenuPreFlight_Click(null, null);
+                return true;
+            }
             if (keyData == Keys.F12)
             {
                 MenuConnect_Click(null, null);
@@ -2315,7 +2362,7 @@ namespace MissionPlanner
                 config["language"] = ci.Name;
                 //System.Threading.Thread.CurrentThread.CurrentCulture = ci;
 
-                HashSet<Control> views = new HashSet<Control> { this, FlightData, FlightPlanner, Simulation };
+                HashSet<Control> views = new HashSet<Control> { this,MultiUav,PreFlight, FlightData, FlightPlanner, Simulation };//SA
 
                 foreach (Control view in MyView.Controls)
                     views.Add(view);
@@ -2702,6 +2749,8 @@ namespace MissionPlanner
         private void readonlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MainV2.comPort.ReadOnly = readonlyToolStripMenuItem.Checked;
-        }    
+        }
+
+        
     }
 }

@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using MissionPlanner.Comms;
 using MissionPlanner.Utilities;
+using System.Threading.Tasks;
+
 
 namespace MissionPlanner
 {
@@ -63,6 +65,19 @@ namespace MissionPlanner
             }
         }
 
+        static void writefile(double lat, double lon,double alt)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\Users\PC\Desktop\File2.json"))
+            {
+                file.Write("{\"plane\":{\"lat\": "+lat+",\"lon\": " + lon +",\"alt_msl\": "+alt+"}}");
+                //file.Write("\"plane\":{\"lat\": " + Convert.ToString(lat) + ");
+
+                file.Close();
+            }
+
+
+        }
+
         void mainloop()
         {
             threadrun = true;
@@ -74,28 +89,28 @@ namespace MissionPlanner
                 {
                     double lat = (int)MainV2.comPort.MAV.cs.lat + ((MainV2.comPort.MAV.cs.lat - (int)MainV2.comPort.MAV.cs.lat) * .6f);
                     double lng = (int)MainV2.comPort.MAV.cs.lng + ((MainV2.comPort.MAV.cs.lng - (int)MainV2.comPort.MAV.cs.lng) * .6f);
-                    string line = string.Format(System.Globalization.CultureInfo.InvariantCulture, "$GP{0},{1:HHmmss.fff},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},", "GGA", DateTime.Now.ToUniversalTime(), Math.Abs(lat * 100), MainV2.comPort.MAV.cs.lat < 0 ? "S" : "N", Math.Abs(lng * 100), MainV2.comPort.MAV.cs.lng < 0 ? "W" : "E", MainV2.comPort.MAV.cs.gpsstatus == 3 ? 1 : 0, MainV2.comPort.MAV.cs.satcount, MainV2.comPort.MAV.cs.gpshdop, MainV2.comPort.MAV.cs.altasl, "M", 0, "M", "");
-
+                    string line = string.Format(System.Globalization.CultureInfo.InvariantCulture, "$GP{0},{1:HHmmss.fff},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},","GGA", DateTime.Now.ToUniversalTime(), Math.Abs(lat * 100), MainV2.comPort.MAV.cs.lat < 0 ? "S" : "N", Math.Abs(lng * 100), MainV2.comPort.MAV.cs.lng < 0 ? "W" : "E", MainV2.comPort.MAV.cs.gpsstatus == 3 ? 1 : 0, MainV2.comPort.MAV.cs.satcount, MainV2.comPort.MAV.cs.gpshdop, MainV2.comPort.MAV.cs.altasl, "M", 0, "M", "");
+                    double alt= MainV2.comPort.MAV.cs.altasl;
                     string checksum = GetChecksum(line);
                     comPort.WriteLine(line + "*" + checksum);
 
                     line = string.Format(System.Globalization.CultureInfo.InvariantCulture, "$GP{0},{1:HHmmss.fff},{2},{3},{4},{5},{6},{7},{8},{9:ddMMyy},{10},", "RMC", DateTime.Now.ToUniversalTime(), "A", Math.Abs(lat * 100), MainV2.comPort.MAV.cs.lat < 0 ? "S" : "N", Math.Abs(lng * 100), MainV2.comPort.MAV.cs.lng < 0 ? "W" : "E", MainV2.comPort.MAV.cs.groundspeed * 3.6, MainV2.comPort.MAV.cs.groundcourse, DateTime.Now, 0);
-
+                    writefile(lat,lng,alt);
                     checksum = GetChecksum(line);
                     comPort.WriteLine(line + "*" + checksum);
 
-                    if (counter % 20 == 0 && HomeLoc.Lat != 0 && HomeLoc.Lng != 0)
-                    {
-                        line = string.Format(System.Globalization.CultureInfo.InvariantCulture, "$GP{0},{1:HHmmss.fff},{2},{3},{4},{5},{6},{7},", "HOM", DateTime.Now.ToUniversalTime(), Math.Abs(HomeLoc.Lat * 100), HomeLoc.Lat < 0 ? "S" : "N", Math.Abs(HomeLoc.Lng * 100), HomeLoc.Lng < 0 ? "W" : "E", HomeLoc.Alt, "M");
+                   // if (counter % 20 == 0 && HomeLoc.Lat != 0 && HomeLoc.Lng != 0)
+                   // {
+                        //line = string.Format(System.Globalization.CultureInfo.InvariantCulture, "$GP{0},{1:HHmmss.fff},{2},{3},{4},{5},{6},{7},", "HOM", DateTime.Now.ToUniversalTime(), Math.Abs(HomeLoc.Lat * 100), HomeLoc.Lat < 0 ? "S" : "N", Math.Abs(HomeLoc.Lng * 100), HomeLoc.Lng < 0 ? "W" : "E", HomeLoc.Alt, "M");
 
-                        checksum = GetChecksum(line);
-                        comPort.WriteLine(line + "*" + checksum);
-                    }
+                       // checksum = GetChecksum(line);
+                        //comPort.WriteLine(line + "*" + checksum);
+                    //}
 
-                    line = string.Format(System.Globalization.CultureInfo.InvariantCulture, "$GP{0},{1},{2},{3},", "RPY", MainV2.comPort.MAV.cs.roll, MainV2.comPort.MAV.cs.pitch, MainV2.comPort.MAV.cs.yaw);
+                   // line = string.Format(System.Globalization.CultureInfo.InvariantCulture, "$GP{0},{1},{2},{3},", "RPY", MainV2.comPort.MAV.cs.roll, MainV2.comPort.MAV.cs.pitch, MainV2.comPort.MAV.cs.yaw);
 
-                    checksum = GetChecksum(line);
-                    comPort.WriteLine(line + "*" + checksum);
+                    //checksum = GetChecksum(line);
+                    //comPort.WriteLine(line + "*" + checksum);
 
                     System.Threading.Thread.Sleep(200);
                     counter++;
